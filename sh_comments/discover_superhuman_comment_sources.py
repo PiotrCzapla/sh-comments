@@ -72,6 +72,7 @@ def summarize_candidate(candidate: ProfileCandidate) -> dict:
             "commentsFound": 0,
             "threadsFound": 0,
             "latestCommentAt": "",
+            "oldestCommentAt": "",
             "hasMailSuperhumanIndexedDB": (indexeddb_dir / "https_mail.superhuman.com_0.indexeddb.leveldb").exists(),
         }
 
@@ -87,6 +88,7 @@ def summarize_candidate(candidate: ProfileCandidate) -> dict:
         "commentsFound": len({row["commentId"] for row in all_comments}),
         "threadsFound": len({row["threadId"] for row in all_comments}),
         "latestCommentAt": max((row["createdAt"] for row in all_comments), default=""),
+        "oldestCommentAt": min((row["createdAt"] for row in all_comments), default=""),
         "hasMailSuperhumanIndexedDB": (candidate.profile_dir / "IndexedDB" / "https_mail.superhuman.com_0.indexeddb.leveldb").exists(),
     }
 
