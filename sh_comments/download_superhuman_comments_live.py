@@ -20,13 +20,13 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from export_superhuman_comments_sqlite import (
+from .export_superhuman_comments_sqlite import (
     DatabaseCandidate,
     copy_wrapped_sqlite,
     html_to_text,
     write_json,
 )
-from superhuman_live_cookie_probe import (
+from .superhuman_live_cookie_probe import (
     ApiError,
     CookieRecord,
     SUPERHUMAN_VERSION,

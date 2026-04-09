@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=64.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sh-comments"
+version = "0.1.0"
+description = "Tools for exporting and inspecting Superhuman comments/snippets"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "cryptography>=41.0.0",
+]
+authors = [{ name = "Piotr Czapla" }]
+license = { text = "MIT" }
+
+[project.scripts]
+discover-superhuman-comment-sources = "sh_comments.discover_superhuman_comment_sources:main"
+download-superhuman-comments-live = "sh_comments.download_superhuman_comments_live:main"
+export-superhuman-comments-sqlite = "sh_comments.export_superhuman_comments_sqlite:main"
+export-superhuman-snippets-fs = "sh_comments.export_superhuman_snippets_fs:main"
+compare-superhuman-comment-exports = "sh_comments.compare_superhuman_comment_exports:main"
+superhuman-live-cookie-probe = "sh_comments.superhuman_live_cookie_probe:main"
+
+[tool.setuptools]
+packages = ["sh_comments"]

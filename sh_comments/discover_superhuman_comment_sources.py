@@ -6,7 +6,7 @@ import json
 from dataclasses import dataclass
 from pathlib import Path
 
-from export_superhuman_comments_sqlite import find_databases, export_database
+from .export_superhuman_comments_sqlite import find_databases, export_database
 
 
 @dataclass(frozen=True)

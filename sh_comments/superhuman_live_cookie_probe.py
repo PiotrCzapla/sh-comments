@@ -22,7 +22,7 @@ from typing import Any
 
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 
-from export_superhuman_comments_sqlite import copy_wrapped_sqlite, export_database, find_databases
+from .export_superhuman_comments_sqlite import copy_wrapped_sqlite, export_database, find_databases
 
 COOKIE_SALT = b"saltysalt"
 COOKIE_IV = b" " * 16

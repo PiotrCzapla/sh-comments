@@ -1,0 +1,20 @@
+# Keep only source files we typically want to share:
+# - Python scripts
+# - Markdown docs
+
+# Ignore everything by default
+*
+
+# Keep git metadata and directories for traversal
+!.gitignore
+!*/
+
+# Keep tracked file types
+!*.py
+!*.md
+!**/*.py
+!**/*.md
+!pyproject.toml
+
+# Private local notes
+virgil.md
