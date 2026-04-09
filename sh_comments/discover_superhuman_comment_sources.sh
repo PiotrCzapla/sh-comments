@@ -113,14 +113,27 @@ extract_logical_name() {
   dd if="$db_file" bs=4096 count=1 2>/dev/null | perl -ne 'if (/\/([^\/\0]+\.sqlite3)/) { print $1; exit }'
 }
 
+copied_db_has_threads_table() {
+  local copied_db=$1
+  local has_threads
+  has_threads=$(sqlite3 -readonly -batch "$copied_db" "SELECT 1 FROM sqlite_master WHERE type='table' AND name='threads' LIMIT 1;" 2>/dev/null || true)
+  [[ "$has_threads" == "1" ]]
+}
+
 query_wrapped_db() {
   local db_file=$1
   local tmp_db
+  local result
 
   tmp_db=$(mktemp "${TMPDIR:-/tmp}/superhuman-comments-XXXXXXXX")
   dd if="$db_file" of="$tmp_db" bs=4096 skip=1 status=none 2>/dev/null
 
-  sqlite3 -readonly -batch -separator '|' "$tmp_db" "
+  if ! copied_db_has_threads_table "$tmp_db"; then
+    rm -f "$tmp_db"
+    return 0
+  fi
+
+  result=$(sqlite3 -readonly -batch -separator '|' "$tmp_db" "
     SELECT
       count(*),
       count(DISTINCT thread_id),
@@ -137,9 +150,10 @@ query_wrapped_db() {
       WHERE threads.superhuman_data LIKE '%\"comment\"%'
         AND json_extract(message.value, '\$.comment') IS NOT NULL
     );
-  "
+  " 2>/dev/null || true)
 
   rm -f "$tmp_db"
+  printf '%s\n' "$result"
 }
 
 summarize_profile() {
@@ -171,6 +185,7 @@ summarize_profile() {
     fi
 
     row=$(query_wrapped_db "$db_file")
+    [[ -n "$row" ]] || continue
     count=${row%%|*}
     row=${row#*|}
     thread_count=${row%%|*}
